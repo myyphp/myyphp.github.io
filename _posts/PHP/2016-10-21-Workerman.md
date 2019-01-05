@@ -10,7 +10,6 @@ tags:  workerman
 * content
 {:toc}
 
-
 ## Workman 简介
 
 ### 概念
@@ -21,12 +20,13 @@ tags:  workerman
 
 `workerman` 本身是一个PHP多进程服务器框架，具有PHP进程管理以及socket通信的模块，所以不依赖php-fpm、nginx或者apache等这些容器便可以独立运行。
 
+
+
+
+
 因此：
 
 **`workerman` 是一个高性能的 `PHP socket` 服务器框架**
-
-
-
 
 ### 特点
 
