@@ -1,0 +1,186 @@
+---
+layout: post
+comments: true
+categories: PHP
+---
+
+
+# PHP中的错误处理
+
+> 有代码的地方，就有可能存在错误，有些错误是我们编写的代码本身引起的，有些错误是环境等原因导致的。PHP中有很多不同等级的错误，针对不同的错误等级做相应的容错处理能提高程序的健壮性，出现错误后也应该让程序保持该有的风度，友好的展示给用户才是更优雅的做法。
+
+## 错误级别全览
+
+值 | 常量 | 说明
+--- | --- |---
+1 | `E_ERROR` | 致命的运行时错误，脚本不会再执行
+2 | `E_WARNING` | 运行时警告，给出提示，脚本继续运行
+4 | `E_PARSE` | 由分析器产生的编译时语法解析错误
+8 |`E_NOTICE` | 运行时通知，表示脚本遇到可能会表现为错误的情况
+16 | `E_CORE_ERROR` | PHP初始化启动过程中发生的致命错误，类似E_ERROR，由PHP引擎核心产生
+32|`E_CORE_WARNING` |初始化启动过程中发生的警告，类似 E_WARNING ，由PHP引擎核心产生
+64 |`E_COMPILE_ERROR` |致命编译时错误。类似 E_ERROR , 由Zend脚本引擎产生的
+128|`E_COMPILE_WARNING` |编译时警告 (非致命错误)。类似 E_WARNING, 由Zend脚本引擎产生的
+256|`E_USER_ERROR` |用户产生的致命错误。类似 E_ERROR，由用户使用`trigger_error()`产生
+512|`E_USER_WARNING` |用户产生的警告信息。类似E_WARNING ，由用户使用`trigger_error()`产生
+1024|`E_USER_NOTICE` |用户产生的通知信息，类似 E_NOTICE，由用户使用`trigger_error()`产生
+2048|`E_STRICT` |启用: PHP对代码的修改建议，以确保代码具有最佳的互操作性和向前兼容性
+4096|`E_RECOVERABLE_ERROR`|可被捕捉的致命错误，如果未被`set_error_handler()`捕获，会产生一个E_ERROR
+8192|`E_DEPRECATED`|运行时通知。启用后将会对在未来版本中可能无法正常工作的代码给出警告
+16384|`E_USER_DEPRECATED`|用户产少的警告信息。 类似 E_DEPRECATED ,由用户使用`trigger_error()`产生
+30719|`E_ALL`|E_STRICT 出外的所有错误和警告信息
+
+
+## 错误相关的设置
+
+- 在`php.ini`中进行配置，或者使用`ini_set()`
+
+```
+#设置报告哪些错误， &：并且， ~：排除
+error_reporting = E_ALL & ~ (E_NOTICE)
+#设置是否显示错误。Off为关闭所有错误显示
+display_errors = On
+#是否记录错误日志,,默认设置为OFF
+log_errors = Off
+#帮助解决代码中的错误,默认为Off
+track_errors = Off
+```
+
+- 在`httpd.conf`中配置，这里的设置会覆盖掉`php.ini`里面的配置
+
+```
+php_flag   display_errors         on
+#只能使用二进制位掩码，2039代表：E_ALL & ~ (E_NOTICE)
+php_value error_reporting       2039
+```
+
+- 使用`error_reporting()`函数 ： 作用范围为当前脚本
+
+```
+// 除了E_NOTICE之外，报告所有的错误
+error_reporting(E_ALL ^ E_NOTICE); 
+// 只报告致命错误
+error_reporting(E_ERROR);       
+// 只报告E_ERROR、E_WARNING 和 E_NOTICE三种错误
+error_reporting(E_ERROR | E_WARNING | E_NOTICE);
+```
+
+**参考配置 :**
+
+```
+#开发环境
+error_reporting = E_ALL     
+display_errors = On          
+html_errors = On            #设置错误信息是否采用html格式
+log_errors = Off            #设置是否记录错误信息
+
+#线上环境
+error_reporting = E_ALL & ~E_NOTICE  
+display_errors = Off  
+log_errors = On  
+html_errors = Off  
+error_log = "/var/log/php-error.log"     
+ignore_repeated_errors = On              #是否在同一行中重复显示一样的错误信息
+ignore_repeated_source = On              #是否重复显示来自同个文件同行代码的错误  
+```
+
+
+## 错误处理
+
+往往程序中绝大部分的错误都是由于代码不严谨或者处理不到位导致的。比如一句加载文件的代码，如果不在加载之前判断其是否存在，是否能被加载，那么这里就存在了一个潜在的报错点。常见的错误处理有以下几种方式：
+
+**一、逻辑判断后直接错误提示**
+
+**USAGE**
+
+```
+if ($_GET['id'] <= 0) {
+    exit('缺少必要的参数');
+}
+```
+
+**二、注册错误处理回调函数（`set_error_handler()`）与手动触发错误（`trigger_error()`）**
+
+**USAGE**
+
+```
+//注册回调函数含有俩个必要参数，和三个可选参数（errfile 、errline 、errcontext ）
+function myError($errno, $errstr)
+{
+    //一些其他业务逻辑代码，比如清除无用文件之类的
+    echo 'Here is custom error: '$errstr;
+    //必要的退出控制很重要，如果不退出，代码还会执行执行代码。
+    exit;
+}
+
+//第二个参数为：要使用自定义处理函数的错误级别
+set_error_handler("myError",E_NOTICE);
+
+print($arr);
+```
+
+运行结果：
+
+```
+Here is custom error: Undefined variable: arr
+```
+
+上面的例子中，错误的触发是由php自动触发的，但是实际开发中我们更多的需要对业务逻辑进行判断并作出相应错误处理，此时在需要的地方使用`trigger_error()`来触发相应的错误级别。
+
+```
+function myError($errno, $errstr)
+{
+    die('Here is custom error: ' . $errstr);
+}
+
+set_error_handler("myError",E_USER_NOTICE);
+
+if (!isset($id)) {
+    trigger_error('缺少必要的参数！', E_USER_NOTICE);
+}
+```
+
+运行结果
+
+```
+Here is custom error: 缺少必要的参数
+```
+
+> 注意：当注册了自定义处理函数后，对应的错误级别触发后会绕过php的内置错误处理程序，除非回调函数返回 `false`。 
+
+
+
+**三、错误日志记录**
+
+如果在`php.ini`中配置了开启日志，那么系统遇到对应的错误级别的错误会自动记录日志。如果需要手动记录，可以使用函数`error_log()`。
+
+`error_log($errormsg[,$message_type,$destination,$headers])` ：把错误信息发送到 web 服务器的错误日志，或者到一个文件里
+
+- `$errormsg` : 要记录的错误信息
+- `$message_type` ： 0：记录到`error_log`日志，3：记录到`$destination`指定的文件
+- `$destination` ：可以指定自定义的日志记录地址
+
+**USAGE**
+
+```
+//输出未定义变量
+echo $a;
+
+error_log('我是自定义的错误');
+```
+
+
+
+```
+# 系统自动触发，比如我的php脚本只有一行代码 echo $a;
+[19-Aug-2016 05:55:03 Europe/Berlin] PHP Notice:  Undefined variable: a in D:\server\test\index.php on line 3
+[19-Aug-2016 05:55:03 Europe/Berlin] PHP Stack trace:
+[19-Aug-2016 05:55:03 Europe/Berlin] PHP   1. {main}() D:\server\test\index.php:0
+
+#手动记录
+[19-Aug-2016 06:07:02 Europe/Berlin] 我是自定义的错误
+```
+
+
+
+
