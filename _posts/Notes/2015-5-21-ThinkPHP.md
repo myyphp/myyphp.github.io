@@ -24,7 +24,7 @@ tags: thinkphp
 
 扩展配置可以支持自动加载额外的自定义配置文件。如果在项目`Common/Conf/config.php`下配置则会到同级下寻找配置文件。也可以在模块下的`config.php`配置。
 
-```
+```php
 // 加载Common/conf/下的user.php、db.php扩展配置文件
 'LOAD_EXT_CONFIG' => 'user,db',  
 ```
@@ -62,7 +62,7 @@ TP的行为可以理解为实现一些功能的操作。运行应用程序，实
 
 行为文件放的位置不重要，只要定义好命名空间，让程序能够加载到此文件即可，比如创建如下目录:`Common/Behavior/TestBehavior/TestBehavior.class.php`
 
-```
+```php
 namespace Common\Behavior;
 use \Think\Behavior;
 
@@ -79,7 +79,7 @@ class TestBehavior extends Behavior{
 
 在`common/conf/tags.php`下定义行为绑定关系：
 
-```
+```php
 return array(
     'app_init' => array(
 		'Common\Behavior\MyAppInitBehavior'
@@ -114,7 +114,7 @@ return array(
 
 自定义的标签位，需要在代码中使用`tag()`方法设置标签位后，才会触发
 
-```
+```php
 public function index(){
     echo 1;
     $a = 'behavior';
@@ -138,7 +138,7 @@ public function index(){
 
 在应用配置或者模块配置文件中开启，并且当前`URL`模式不能是普通模式，且`URL`中的模块名不能被路由。
 
-```
+```php
 //开启路由
 'URL_ROUTER_ON'   => true, 
 //规则定义
@@ -167,7 +167,7 @@ TP的路由功能包括：
 
 **USAGE**
 
-```
+```php
 // www.shop.com/admin.php/test/2 可以被匹配
 'test/:id\d' => 'index/index/test',
 
@@ -187,7 +187,7 @@ TP的路由功能包括：
 
 **USAGE**
 
-```
+```php
 '/^new\/(\d{4})\/(\d{2})$/' => 'News/achive?year=:1&month=:2',
 ```
 
@@ -197,7 +197,7 @@ TP的路由功能包括：
 
 **USAGE**
 
-```
+```php
 //等同于 new/top$
 'new/top' => 'news/index/type/top'
 ```
@@ -208,7 +208,7 @@ TP的路由功能包括：
 
 **USAGE**
 
-```
+```php
 'hello/:name' => function($name){
         echo 'Hello,'.$name;        
     }
@@ -218,7 +218,7 @@ TP的路由功能包括：
 
 有如下规则：
 
-```
+```php
 'URL_ROUTER_ON'   => true,
 'URL_ROUTE_RULES' => array(   
     'new/:id\d'    => 'News/read',
@@ -243,7 +243,7 @@ TP的路由功能包括：
 
 **USAGE**
 
-```
+```php
 public function index(){}
 public function _before_index(){}
 public function _after_index(){}
@@ -251,7 +251,7 @@ public function _after_index(){}
 
 **参数绑定：**
 
-```
+```php
 URL_PARAMS_BIND_TYPE'  => 0  //默认0：按变量绑定，1：按顺序绑定
 ```
 
@@ -259,7 +259,7 @@ URL_PARAMS_BIND_TYPE'  => 0  //默认0：按变量绑定，1：按顺序绑定
 
 使用伪静态更理由`SEO`优化。配置写法：
 
-```
+```php
 'URL_HTML_SUFFIX'=>'shtml'                  //支持.shtml静态后缀
 'URL_HTML_SUFFIX' => 'html|shtml|xml'       //支持多个静态后缀
 'URL_HTML_SUFFIX' => ''                     //支持全部静态后缀
@@ -277,7 +277,7 @@ URL_PARAMS_BIND_TYPE'  => 0  //默认0：按变量绑定，1：按顺序绑定
 
 参数：支持字符串或者数组
 
-```
+```php
 U('Index/test',array('id'=>3))
 U('Index/test','id=3&cate=2')
 U('/test/3') // 路由url，前提定义了规则，比如：'test/:id\d' => 'index/index/test' 
@@ -291,7 +291,7 @@ U('/test/3') // 路由url，前提定义了规则，比如：'test/:id\d' => 'in
 
 如果想使用自定义的跳转模板页面，需要配置模板路径：
 
-```
+```php
 //失败时的跳转模板页面会去找：view/public/error.html
 'TMPL_ACTION_ERROR' =>'Public:error';
 //成功后的跳转模板页面会去找：view/public/success.html
@@ -317,13 +317,13 @@ U('/test/3') // 路由url，前提定义了规则，比如：'test/:id\d' => 'in
 
 `TP`会在模型首次实例化的时候自动获取数据表的字段信息，每个模型对应的缓存文件存放在`Runtime`目录下。在非调试模式下是默认开启缓存的，调试模式下默认关闭。该配置的修改：
 
-```
+```php
 'DB_FIELDS_CACHE'=>true //线上由于数据表结构比较稳定，建议开启字段缓存
 ```
 
 **`PDO`连接配置**
 
-```
+```php
 //PDO连接方式
 'DB_TYPE'   => 'pdo', // 数据库类型
 'DB_USER'   => 'root', // 用户名
@@ -336,7 +336,7 @@ U('/test/3') // 路由url，前提定义了规则，比如：'test/:id\d' => 'in
 
 - `where` ：支持表达式的使用
 
-```
+```php
 # 使用预处理查询字符串更安全
 $user = I('user', '');
 $user_info = M('admin')->where("username='%s'",array($user))->select(); # %s表示字符串
@@ -345,14 +345,14 @@ $user_info = M('admin')->where("username='%s'",array($user))->select(); # %s表�
 - `table` ：指定操作的数据表
 - `alias` ：连表时取别名
 
-```
+```php
 $Model = M('User');
 $Model->alias('a')->join('__DEPT__ b ON b.user_id= a.id')->select();
 ```
 
 - `data`  ：设置当前要操作的数据对象的值
 
-```
+```php
 $Model = M('User');
 $data['name'] = 'myy';
 $data['password'] = md5(123123);
@@ -362,7 +362,7 @@ $Model->data($data)->add();
 
 - `field` ：标识要返回或者操作的字段
 
-```
+```php
 $Model->field('id,SUM(score)')->select();    #可以使用函数
 $Model->field(array('id','concat(name,'-',id)'=>'truename','LEFT(title,7)'=>'sub_title'))->select();
 $Model->field(array('id','nickname'=>'name'))->select();    #数组方式还可以取别名
@@ -373,22 +373,21 @@ $Model->field('user_id,content',true)->select(); #字段排除
 - `limit`
 - `page` ：用于分页，第一个参数为页数
 
-```
+```php
 //page(1,20)相当于limit(0,20),page(2,20)相当于limit(20,20)
 $user_info = M('admin')->page(1,20)->select();
-
 ```
 
 - `group` ： 分组
 - `having` ： 配合group方法完成从分组的结果中筛选（通常是聚合条件）数据
 
-```
+```php
 $this->field('username,max(score)')->group('user_id')->having('count(test_time)>3')->select();
 ```
 
 - `join` ： 联合查询，支持四个类型
 
-```
+```php
 $res = M('admin')->alias('a')->join('left join sh_role as r on a.id = r.id')->select();
 ```
 
@@ -397,22 +396,21 @@ $res = M('admin')->alias('a')->join('left join sh_role as r on a.id = r.id')->se
 - `union` ：合并两个或多个 `SELECT` 语句的结果集
 - `distinct` ： 对结果进行去重
 
-```
-
+```php
 $Model->distinct(true)->field('name')->select();
 ```
 
 - `lock` ： 用于数据库的锁机制
 - `cache` ： 缓存查询结果
 
-```
+```php
 //单独制定缓存有效期和缓存类型,不制定的话，会使用配置项的 DATA_CACHE_TIME 和 DATA_CACHE_TYPE
 $res = M('admin')->where("id=1")->cache(true, 60, 'Memcache')->find();
 ```
 
 - `comment` ： 用于在生成的SQL语句中添加注释内容
 
-```
+```php
 M('admin')->comment('查询第一条记录')->where("id=1")->find();
 ```
 
@@ -423,7 +421,7 @@ M('admin')->comment('查询第一条记录')->where("id=1")->find();
 
 tp实现了`ActiveRecords`模式的`ORM`模型，采用了非标准的`ORM`模型：表映射到类，记录映射到对象
 
-```
+```php
 M('admin')->find(1);
 M('admin')->select('1,3,8'); 
 M('admin')->delete(8); 
@@ -436,7 +434,7 @@ M('admin')->delete(8);
 
 **表达式查询**
 
-```
+```php
 $where['id'] = array('in', array(1,3,5));
 //可以改写为:
 $where['id'] = array('exp', 'IN (1,3,5)');
@@ -451,7 +449,7 @@ $model->where('id=1')->save($data);
 ```
 生成的`sql`语句：
 
-```
+```php
 UPDATE `sh_admin` SET `email`='myyd@outlook.com',`is_use`=is_use+1 WHERE ( id=1 )
 ```
 
@@ -461,7 +459,7 @@ UPDATE `sh_admin` SET `email`='myyd@outlook.com',`is_use`=is_use+1 WHERE ( id=1 
 
 在使用 `where($param)` 时数组`$param`条件的元素之间的各关系默认是 `and` 的关系，如果想修改成 `or` 关系的话，可以如下使用：
 
-```
+```php
 $param['name'] = 'may';
 $param['age'] = 21;
 $param['_logic'] = 'OR';
@@ -472,7 +470,7 @@ M('admin')->where($param)->select();
 
 如果想对某个字段进行区间范围筛选，比如：
 
-```
+```php
 //查找 id<10 or id>30的记录
 $where['id'] = array(array('lt',10), array('gt',30), 'or');
 //查找 10<id<30的记录
@@ -483,7 +481,7 @@ $where['id'] = array(array('lt',30), array('gt',10), 'and');
 
 字符串条件：
 
-```
+```php
 //字符串条件和数组条件一起舒勇
 $where['name'] = 'mayy';
 $where['_string'] = 'is_use=1 AND id>1';
@@ -492,7 +490,7 @@ M('admin')->where($where)->select();
 
 复合查询：把前面的条件通过 `_complex` 组装在一起，再和其他条件 `and` 在一起，以完成更复杂的查询
 
-```
+```php
 $where['name']  = array('like', '%mayy%');
 $where['age']  = array('gt',23);
 $where['_logic'] = 'or';
@@ -503,7 +501,7 @@ M('admin')->where($params)->select();
 
 - 子查询
 
-```
+```php
 //1.构建需要的子查询sql语句
 $subQuery = $model->where($where)->buildSql();
 //2.利用子查询进行查询 
@@ -519,7 +517,7 @@ $model->table($subQuery.' a')->where($where)->order($order)->select()
 
 验证规则格式：
 
-```
+```php
 array(     
     array(验证字段1,验证规则,错误提示,[验证条件,附加规则,验证时间]),
     array(验证字段2,验证规则,错误提示,[验证条件,附加规则,验证时间]),     
@@ -574,7 +572,7 @@ tp内置的模板引擎支持两种标签定义：
 
 配置普通标签的标记：
 
-```
+```php
 'TMPL_L_DELIM'=>'{',   #开始标签
 'TMPL_R_DELIM'=>'}',   #结束标签
 ```
@@ -582,7 +580,7 @@ tp内置的模板引擎支持两种标签定义：
 
 **USAGE**
 
-```
+```php
 //自定义变量需要先分配
 {$name}                   //在模板中输出普通变量
 {$user.email}             //输出数组里面的一个元素
@@ -690,7 +688,7 @@ TP的模板布局原理：
 
 通过创建一个模板文件来布局，比如：
 
-```
+```php
 <include file="Public:header" />
 {__CONTENT__}
 <include file="Public:footer" />
@@ -701,7 +699,7 @@ TP内置的模板引擎支持三种布局方式：
 
 - 全局配置方式 ：需要配置开启布局和指定布局文件
 
-```
+```php
 'LAYOUT_ON'=>true,  
 'LAYOUT_NAME'=>'layout', //每次display时会去找布局文件：layout.html
 'TMPL_LAYOUT_ITEM' =>  '{__REPLACE__}',   //可以修改{__CONTENT__}
@@ -709,13 +707,13 @@ TP内置的模板引擎支持三种布局方式：
 
 - 模板标签方式 ： 不需要进行任何设置，在模板文件的头部加入`layout`标签表明是否需要使用模板布局
 
-```
+```php
 <layout name="layoutname"  replace="{__REPLACE__}" />     //replace可以不写，用默认的
 ```
 
 - `layout()`方法控制方式 ： 在控制器里面通过`layout(bool)`来灵活控制当前要加载的模板是否使用布局
 
-```
+```php
 Public function add() {
     layout(true);       //此时不需要配置开启也可以使用     
     $this->display('add');     
@@ -745,7 +743,7 @@ TP在加载模板文件后，会对一些特殊的字符串（区分大小写）
 
 除了默认的之外，也可以自定义一些想被替换的字符串：
 
-```
+```php
 'TMPL_PARSE_STRING'  =>array(
     '__PUBLIC__' => '/Common',       // 更改默认的/Public 替换规则     
     '__JS__'     => '/Public/JS/',   // 增加新的JS类库路径替换规则
@@ -769,7 +767,7 @@ TP在加载模板文件后，会对一些特殊的字符串（区分大小写）
 
 开启调试模式只需要在入口文件处定义即可：
 
-```
+```php
 define('APP_DEBUG', true);
 ```
 
@@ -783,7 +781,7 @@ define('APP_DEBUG', true);
 
 非调试模式下，如果要开启日志记录，需要配置 ：
 
-```
+```php
 'LOG_RECORD' => true,                      // 开启日志记录
 'LOG_LEVEL'  =>'EMERG,ALERT,CRIT,ERR',     //只记录EMERG ALERT CRIT ERR 错误
 'LOG_TYPE'   =>  'File',                   // 日志记录类型 默认为文件方式
@@ -802,7 +800,7 @@ define('APP_DEBUG', true);
 
 开启页面`trace`可以查看到更多的调试信息
 
-```
+```php
 'SHOW_PAGE_TRACE' =>true,   //开启页面trace
 ```
 
@@ -813,7 +811,7 @@ define('APP_DEBUG', true);
 
 只需要在不同的位置对某个变量进行trace输出即可
 
-```
+```php
 $res = array();
 trace($res);
 $res = M('admin')->select();
@@ -826,7 +824,7 @@ trace($res);
 
 **性能调试**
 
-```
+```php
 G('begin'); 
 // ...其他代码段
 G('end');
@@ -837,13 +835,13 @@ echo G('begin','end','m').'kb';     //内存占用统计
 
 **错误调试**
 
-```
+```php
 E($msg);    //输出错误信息，并中断执行。类似真实报错的页面。而非单纯的输出信息。
 ```
 
 **模型调试**
 
-```
+```php
 echo M('admin')->getLastSql();
 echo M('admin')->_sql();         //3.2版本的简化方法
 echo M('admin')->getDbError();   //如果CURD操作返回false，可以用此获取数据库的错误信息
@@ -858,7 +856,7 @@ TP提供的缓存包括：
 - 查询缓存 ： 利用 `cache()` 方法
 - SQL解析缓存 ： 需要配置是否开启以及缓存方式
 
-```
+```php
 'DB_SQL_BUILD_CACHE' => true,
 'DB_SQL_BUILD_QUEUE' => 'file',   //默认为file,还可以支持xcache和apc
 'DB_SQL_BUILD_LENGTH' => 20,      // SQL缓存的队列长度
@@ -866,7 +864,7 @@ TP提供的缓存包括：
 
 - 静态缓存 ： 需要配置开启以及缓存规则,生成的文件在`HTML_PATH`定义的目录下，且只有`get`请求才会生效
 
-```
+```php
 'HTML_CACHE_ON'     =>    true, // 开启静态缓存
 'HTML_CACHE_TIME'   =>    60,   // 全局静态缓存有效期（秒）
 'HTML_FILE_SUFFIX'  =>    '.shtml', // 设置静态缓存文件后缀
@@ -908,7 +906,7 @@ TP提供的缓存包括：
 
 1. 配置牌验证
 
-```
+```php
 'TOKEN_ON'      =>    true,  // 是否开启令牌验证 默认关闭
 'TOKEN_NAME'    =>    '__hash__',  // 令牌验证的表单隐藏字段名称，默认为__hash__
 'TOKEN_TYPE'    =>    'md5',  //令牌哈希验证规则 默认为MD5

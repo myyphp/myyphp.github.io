@@ -59,7 +59,7 @@ tags:  workerman
 
 2、安装php的`libevent`扩展，如果还没有安装的话
 
-```
+```php
 wget http://pecl.php.net/get/libevent-0.1.0.tgz
 tar -zxvf libevent-0.1.0.tgz
 cd libevent-0.1.0/

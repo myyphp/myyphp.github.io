@@ -38,7 +38,7 @@ tags:  文档生成
 - 获取[安装文件](http://www.graphviz.org/pub/graphviz/stable/windows/graphviz-2.38.msi) ，注意：必须是`Graphviz.msi`,同安装exe文件一样。
 - 使用pear安装`image_graphviz`，以便php可以操作`Graphviz`。命令：
 
-```
+```php
 pear install image_graphviz
 
 downloading Image_GraphViz-1.3.0.tgz ...
@@ -49,7 +49,7 @@ install ok: channel://pear.php.net/Image_GraphViz-1.3.0
 
 - 修改通过pear安装的`imgae_graphviz`,路径，`php/pear/Image/Graphviz.php`：
 
-```
+```php
 var $dotCommand = 'D:/ruanjian/Graphviz2.38/bin/dot'; //Graphviz安装路径
 var $neatoCommand = 'D:/ruanjian/Graphviz2.38/bin/neato';//Graphviz安装路径
 ```
@@ -58,7 +58,7 @@ var $neatoCommand = 'D:/ruanjian/Graphviz2.38/bin/neato';//Graphviz安装路径
 
 **USAGE**
 
-```
+```php
 require 'd:/xampp/php/pear/Image/GraphViz.php';
 
 $gv = new Image_GraphViz();
@@ -77,7 +77,7 @@ $gv->image();
 
 **方式一：使用`PEAR`安装**
 
-```
+```php
 pear channel-discover pear.phpdoc.org
 pear install phpdoc/phpDocumentor
 ```
@@ -87,7 +87,7 @@ pear install phpdoc/phpDocumentor
 - 下载`PHAR`文件  http://www.phpdoc.org/phpDocumentor.phar
 - 生成文档命令：
 
-```
+```php
 php phpDocumentor.phar -d . -t docs/api -o "HTML:frames:phpedit"     #-d 指定路径，-f指定文件，-t指定文档路径
 ```
 
@@ -99,7 +99,7 @@ php phpDocumentor.phar -d . -t docs/api -o "HTML:frames:phpedit"     #-d 指定�
 
 - 在项目目录下创建文件`composer.json`，内容如下：
 
-```
+```php
 {
     "require-dev": {
         "phpdocumentor/phpdocumentor": "2.*"
@@ -131,7 +131,7 @@ php phpDocumentor.phar -d . -t docs/api -o "HTML:frames:phpedit"     #-d 指定�
 
 **USAGE**
 
-```
+```php
 /**
  * 删除指定商品
  *
@@ -181,7 +181,7 @@ function delGoods($goods_id)
 
 - 注释必须的形式:
 
-```
+```php
 /**
  * XXXXXXX
  */
@@ -207,8 +207,7 @@ function delGoods($goods_id)
 
 #### 代码示例
 
-```
-
+```php
 /**
  * virtualShelves.php
  *
@@ -274,7 +273,7 @@ class VirtualShelves{
 
 生成命令：
 
-```
+```php
  phpdoc.bat  -d d:\server\apidoc\virtualShevles.php  -t d:\apidoc\
 ```
 

@@ -21,7 +21,7 @@ tags: 异常
 
 一个简单的异常处理如下：
 
-```
+```php
 try{
     throw new Exception('对方不想和你说话，并抛出了一个异常');
 } catch(Exception $e) {
@@ -42,7 +42,7 @@ try{
 
 上面例子中的代码 : `throw new Exception()`，实例化的实际上就是PHP内置的异常处理类,结构中，可以被外部调用的方法如下 ：
 
-```
+```php
 class Exception  
 {  
     function __construct($message = null, $code = 0);  
@@ -72,7 +72,7 @@ class Exception
 
 - 我们便可以定义一个异常类，并定义一个用于展示500页面的方法
 
-```
+```php
 class MyException extends Exception{
     public function page500(){
     	//这里可以加载500页面模板...
@@ -83,7 +83,7 @@ class MyException extends Exception{
 
 - 在业务代码里面进行相应的异常抛出、处理
 
-```
+```php
 try {  
     // some codes... 
     throw new MyException('自定义异常');  
@@ -99,7 +99,7 @@ try {
 
 如果代码里面抛出了异常，而又没有被捕获，或者捕获的类型匹配不上，还是会报出一个`Fatal error`，为了防止这种不友好的错误展示给用户，系统函数 `set_exception_handler()` 闪亮登场，该函数可以用来捕获所有未被捕获处理的异常类型。
 
-```
+```php
 //异常处理定制
 function exception_handler($e) 
 { 
