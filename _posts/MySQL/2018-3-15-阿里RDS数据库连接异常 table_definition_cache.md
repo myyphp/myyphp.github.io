@@ -17,7 +17,7 @@ tags: MYSQL 阿里云 异常
 
 今天在发布一个新的项目后，同时将对应的数据库放进去了，可是代码在运行时，出现了如下错误：
 
-```mysql
+```php
 ERROR 1615 (HY000): Prepared statement needs to be re-prepared
 ```
 
@@ -29,7 +29,7 @@ ERROR 1615 (HY000): Prepared statement needs to be re-prepared
 
 查阅相关文档，问题应该出在数据库的表缓存数量限制上，查询当前打开表的数量如下：
 
-```mysql
+```php
 show global status like 'open%tables%';
 ```
 
@@ -44,7 +44,7 @@ Opened_tables|77765
 
 再查询表缓存数量配置：
 
-```mysql
+```php
 show variables like 'table%cache';
 ```
 
@@ -59,13 +59,13 @@ table_open_cache|2000
 
 由此，可能的原因是 `table_definition_cache` 较小，可以通过增大对应值  来尝试（这里，我将值调为2048），如果是在本地数据库可以 `root` 用户直接执行：
 
-```mysql
+```php
 set global table_definition_cache=2048;
 ```
 
 但是RDS数据库给到的账号并非超级管理员，执行时，报错：
 
-```mysql
+```php
 [Err] 1227 - Access denied; you need (at least one of) the SUPER privilege(s) for this operation
 ```
 
