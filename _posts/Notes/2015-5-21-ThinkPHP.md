@@ -1,8 +1,14 @@
 ---
+title:  "ThinkPHP"
+date:   2015-5-21 10:14:00
 layout: post
 comments: true
 categories: Notes
+tags: thinkphp
 ---
+
+* content
+{:toc}
 
 
 # TP学习

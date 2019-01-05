@@ -1,8 +1,14 @@
 ---
+title:  "Exception"
+date:   2016-3-18 12:14:54
 layout: post
 comments: true
 categories: PHP
+tags: 异常
 ---
+
+* content
+{:toc}
 
 # 异常处理
 

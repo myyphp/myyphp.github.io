@@ -1,9 +1,14 @@
 ---
+title:  "PHPDocumentor"
+date:   2016-3-3 12:14:54
 layout: post
 comments: true
 categories: Tools
+tags:  文档生成
 ---
 
+* content
+{:toc}
 
 ### 什么是PHPDocumentor？
 
